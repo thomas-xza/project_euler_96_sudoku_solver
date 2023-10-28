@@ -15,30 +15,46 @@ int
 read_file(int8 *storage, int8 *filename);
 
 int
+load_sudoku(int8 *raw_data, int8 *sudoku);
+
+int
 main(int argc, char *argv[]) {
 
-  int8 raw_data[SUDOKU_QUANTITY * 10 + 64];
+  int8 raw_data[SUDOKU_QUANTITY * 128] = {0};
 
-  int8 sudoku_set[SUDOKU_QUANTITY][81] = {0};
+  int8 sudoku[81] = {0};
 
-  int8 i, j;
+  int i, j;
 
   read_file(&raw_data[0], "96_sudoku_set.txt");
+  
+  for ( i = 0 ; i < SUDOKU_QUANTITY * 81 ; i += 81 ) {
 
-  printf("%s \n", &raw_data[0]);
+    /* load_sudoku(&raw_data[i], &sudoku[0]); */
+
+  }
 
   return 0;
 
 }
+
+
+int
+load_sudoku(int8 *raw_data, int8 *sudoku) {
+
+  
+
+}
+
 
 int
 read_file(int8 *storage, int8 *filename_pt) {
 
   FILE *in_file_pt;
 
-  int char_read, char_n;
-
   int8 i = 0;
+
+  int8 char_n, char_read;
 
   in_file_pt = fopen(filename_pt, "r");
 
@@ -46,11 +62,11 @@ read_file(int8 *storage, int8 *filename_pt) {
 
     char_read = fgetc(in_file_pt);
 
-    char_n = char_read - 48;    
+    char_n = char_read - 48;
 
     if (char_n >= 0 && char_n <= 9) {
       
-      /* printf(" %d", char_n); */
+      printf(" %c %d", char_read, char_read);
 
       *(storage + i) = char_n;
 
@@ -58,6 +74,10 @@ read_file(int8 *storage, int8 *filename_pt) {
 
     }
 
+    printf("\n");
+
   }
+
+  return 0;
 
 }
