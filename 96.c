@@ -11,7 +11,7 @@
 
 #define SUDOKU_QUANTITY 50
 
-int
+void
 read_file(int8 *storage, int8 *filename);
 
 int
@@ -27,12 +27,16 @@ main(int argc, char *argv[]) {
   int i, j;
 
   read_file(&raw_data[0], "96_sudoku_set.txt");
+
   
-  for ( i = 0 ; i < SUDOKU_QUANTITY * 81 ; i += 81 ) {
+  
+  /* for ( i = 0 ; i < SUDOKU_QUANTITY * 81 ; i += 81 ) { */
 
-    /* load_sudoku(&raw_data[i], &sudoku[0]); */
+  /*   /\* load_sudoku(&raw_data[i], &sudoku[0]); *\/ */
 
-  }
+  /*   printf("nothing"); */
+
+  /* } */
 
   return 0;
 
@@ -47,12 +51,12 @@ load_sudoku(int8 *raw_data, int8 *sudoku) {
 }
 
 
-int
+void
 read_file(int8 *storage, int8 *filename_pt) {
 
   FILE *in_file_pt;
 
-  int8 i = 0;
+  int i = 0;
 
   int8 char_n, char_read;
 
@@ -66,18 +70,14 @@ read_file(int8 *storage, int8 *filename_pt) {
 
     if (char_n >= 0 && char_n <= 9) {
       
-      printf(" %c %d", char_read, char_read);
+      /* printf(" %c %d %i \n", char_read, char_n, i); */
 
-      *(storage + i) = char_n;
+      *(storage + i) = 1;
 
       i += 1;
 
     }
 
-    printf("\n");
-
   }
-
-  return 0;
 
 }
