@@ -20,6 +20,9 @@ load_sudoku(int8 *raw_data, int8 *sudoku);
 void
 print_sudoku(int8 *sudoku_pt);
 
+void
+solve_sudoku(int8 *sudoku_pt);
+  
 int
 main(int argc, char *argv[]) {
 
@@ -35,6 +38,8 @@ main(int argc, char *argv[]) {
 
     load_sudoku(&raw_data[i], &sudoku[0]);
 
+    solve_sudoku(&sudoku[0]);
+
     /* print_sudoku(&sudoku[0]); */
 
   }
@@ -43,6 +48,19 @@ main(int argc, char *argv[]) {
 
 }
 
+
+void
+solve_sudoku(int8 *sudoku_pt) {
+
+  int8 possibilities[81][9] = {0}
+
+  /*  setup possibilities  */
+
+    /*  begin brute-force  */
+
+    
+
+}
 
 void
 print_sudoku(int8 *sudoku_pt) {
