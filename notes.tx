@@ -1,0 +1,13 @@
+The initial problem is the data structures.
+There are so many different ways to load the file in to memory.
+- structs
+- multidimensional arrays
+- 1 long array (mathematically accessed)
+
+In my experience structs can be convoluted to access, so I would avoid
+them for situations where frequent cross-access between objects is
+required.
+
+Multi-dimensional was initially attractive but is proving a fiddle to
+load into. However, perhaps if everything is loaded into one long
+line, *then* put into an array, that may bring more luck...?

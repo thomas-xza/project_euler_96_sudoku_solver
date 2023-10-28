@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
-#include "./lib/file_to_array.c"
+#include "./lib/file-to-array.c"
 
 #define int8   char
 #define sint8  signed char
@@ -10,45 +9,55 @@
 #define int64  long long int
 #define uint64 unsigned long long int
 
+#define SUDOKU_QUANTITY 50
+
+int
+read_file(int8 *storage, int8 *filename);
+
 int
 main(int argc, char *argv[]) {
 
-  uint64 x;
+  int8 raw_data[SUDOKU_QUANTITY * 10 + 64];
 
-  uint64 sum = 0;
+  int8 sudoku_set[SUDOKU_QUANTITY][81] = {0};
 
-  int8 int_triangle;
+  int8 i, j;
 
-  /* uint64 *squares = malloc(sizeof(int64) * SQUARESTOTAL); */
+  read_file(&raw_data[0], "96_sudoku_set.txt");
 
-  /* gen_squares(squares, SQUARESTOTAL); */
+  printf("%s \n", &raw_data[0]);
 
-  for ( x = 2 ; x < UPPERLIMIT ; x++ ) {
+  return 0;
 
-    int_triangle = investigate_n(x, 1);
+}
 
-    if ( int_triangle == 1 ) {
+int
+read_file(int8 *storage, int8 *filename_pt) {
 
-      printf("%llu  +\n", x);
+  FILE *in_file_pt;
 
-      sum += x;
+  int char_read, char_n;
 
-    } else {
+  int8 i = 0;
 
-      int_triangle = investigate_n(x, 2);
+  in_file_pt = fopen(filename_pt, "r");
 
-      if ( int_triangle == 1 ) {
+  while (char_read != EOF) {
 
-	printf("%llu  -\n", x);
+    char_read = fgetc(in_file_pt);
 
-	sum += x;
+    char_n = char_read - 48;    
 
-      }
-    
+    if (char_n >= 0 && char_n <= 9) {
+      
+      /* printf(" %d", char_n); */
+
+      *(storage + i) = char_n;
+
+      i += 1;
+
     }
 
   }
-
-  printf("sum: %llu\n", sum);
 
 }

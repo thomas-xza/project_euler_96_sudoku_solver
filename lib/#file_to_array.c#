@@ -1,0 +1,4 @@
+
+void file_to_array_of_int8(char *int8_init_ptr, char *filename);
+
+
