@@ -114,12 +114,20 @@ solve_sudoku(int8 *sudoku_pt) {
 
       /*  Backtrack.  */
 
+      printf("Backtracking %d...\n", write_path[i]);
+
       write_to_sudoku(sudoku_pt, pos, 0);
+
+      print_sudoku(sudoku_pt);
 
       i -= 1;
 
       write_path[i] = 0;
       
+    } else {
+
+      printf("Validated");
+
     }
 
     completed = chk_completion(sudoku_pt);
@@ -179,6 +187,8 @@ find_earliest_blank(int8 *sudoku_pt) {
 
   while ( *(sudoku_pt + i) != 0 ) {
 
+    printf("target: %d\n", *(sudoku_pt + i));
+
     i += 1;
 
   }
@@ -217,29 +227,15 @@ validate_sudoku(int8 *sudoku_pt) {
   
   error = check_sets(sudoku_pt, 1);
 
-  if ( error == 1 ) {
-
-    return 1;
-
-  }
-
-  printf("error: %d \n", error);
+  if ( error == 1 ) {  printf("row error\n"); return 1;  }
 
   error = check_sets(sudoku_pt, 2);
 
-  if ( error == 1 ) {
-
-    return 1;
-
-  }
+  if ( error == 1 ) {  printf("vetical error\n"); return 1;  }
 
   error = check_sets(sudoku_pt, 3);
 
-  if ( error == 1 ) {
-
-    return 1;
-
-  }
+  if ( error == 1 ) {  printf("3x3 error\n"); return 1;  }
 
   return 0;
 
@@ -259,6 +255,8 @@ check_sets(int8 *sudoku_pt, int8 set_type) {
 
   for ( i = 0 ; i < 9 ; i++ ) {
 
+    printf("set:  ");
+
     for ( j = 0 ; j < 9 ; j++ ) {
 
       if ( set_type == 1 ) {
@@ -267,15 +265,11 @@ check_sets(int8 *sudoku_pt, int8 set_type) {
 
 	set[j] = *(sudoku_pt + i*9 + j);
 
-	/* printf("%d  ", *(sudoku_pt + i*9 + j)); */
-
       } else if ( set_type == 2 ) {
 
 	/*  Vertical columns.  */
 	
 	set[j] = *(sudoku_pt + i + j*9);
-
-	/* printf("%d  ", *(sudoku_pt + i + j*9)); */
 
       } else if ( set_type == 3 ) {
 
@@ -283,11 +277,13 @@ check_sets(int8 *sudoku_pt, int8 set_type) {
 
 	set[j] = *(sudoku_pt + selector_a[i] + selector_b[j]);
 	
-	printf("%d  ", *(sudoku_pt + selector_a[i] + selector_b[j]));
-	
       }
 
+      printf("%d  ", set[j]);
+
     }
+
+    printf("\n");
 
     duplicate_found = check_for_duplicates(&set[0]);
 
@@ -319,7 +315,7 @@ check_for_duplicates(int8 *set) {
 
       /* printf("%d = %d,   %d = %d  \n", i, *(set + i), j, *(set + j)); */
 
-      if ( *(set + i) == *(set + j) ) {
+      if ( *(set + i) != 0 && *(set + i) == *(set + j) ) {
 
 	return 1;
 
