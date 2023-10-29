@@ -9,5 +9,13 @@ them for situations where frequent cross-access between objects is
 required.
 
 Multi-dimensional was initially attractive but is proving a fiddle to
-load into. However, perhaps if everything is loaded into one long
-line, *then* put into an array, that may bring more luck...?
+load into.
+UPDATE: figured out the multidimensional via pointers.
+
+----
+
+The step-by-step process of the algorithm:
+
+1. Setup possibilities using input sudoku
+2. Fill in a blank using next available, delete possibility, then validate
+3. Either continue, or backtrack

@@ -10,6 +10,7 @@
 
 #define SUDOKU_QUANTITY 2
 
+
 void
 read_file(int8 *storage, int8 *filename);
 
@@ -24,6 +25,19 @@ solve_sudoku(int8 *sudoku_pt);
   
 void
 setup_possibilities(int8 *possibilities_pt, int8 *sudoku_pt);
+
+void
+print_possibilities(int8 *possibilities_pt, int8 *sudoku_pt);
+
+int8
+attempt_possibility(int8 *possibilities_pt, int8 *sudoku_pt);
+
+int8
+validate_sudoku(int8 *possibilities_pt, int8 *sudoku_pt);
+
+void
+backtrack(int8 pos, int8 *sudoku_pt);
+
 
 int
 main(int argc, char *argv[]) {
@@ -56,12 +70,55 @@ solve_sudoku(int8 *sudoku_pt) {
 
   int8 possibilities[81][9] = {0};
 
+  int8 pos, result = {0};
+
   setup_possibilities(&possibilities[0][0], sudoku_pt);
 
   print_possibilities(&possibilities[0][0], sudoku_pt);
 
+  /* pos = attempt_possibility(&possibilities[0][0], sudoku_pt); */
+
+  /* result = validate_sudoku(&possibilities[0][0], sudoku_pt); */
+
+  if ( result == 0 ) {
+
+    backtrack(pos, sudoku_pt);
+
+  }
 
 }
+
+
+int8
+attempt_possibility(int8 *possibilities_pt, int8 *sudoku_pt) {
+
+  int8 pos;
+
+  /*  pos = find_earliest_blank(sudoku_pt);
+
+      extract_next_possibility(possibilities_pt, pos);
+
+   */
+  
+
+}
+
+
+int8
+validate_sudoku(int8 *possibilities_pt, int8 *sudoku_pt) {
+
+  
+
+}
+
+
+void
+backtrack(int8 pos, int8 *sudoku_pt) {
+
+  
+
+}
+
 
 void
 print_possibilities(int8 *possibilities_pt, int8 *sudoku_pt) {
