@@ -33,6 +33,15 @@ int8
 attempt_possibility(int8 *possibilities_pt, int8 *sudoku_pt);
 
 int8
+find_earliest_blank(int8 *sudoku_pt);
+
+int8
+extract_next_possibility(int8 *possibilities_pt, int8 pos);
+
+void
+write_to_sudoku(int8 *sudoku_pt, int8 pos, int8 new_value);
+
+int8
 validate_sudoku(int8 *possibilities_pt, int8 *sudoku_pt);
 
 void
@@ -70,21 +79,29 @@ solve_sudoku(int8 *sudoku_pt) {
 
   int8 possibilities[81][9] = {0};
 
-  int8 pos, result = {0};
+  int8 pos, result, i = 0;
+
+  int8 write_path[81] = {0}; 
 
   setup_possibilities(&possibilities[0][0], sudoku_pt);
 
-  print_possibilities(&possibilities[0][0], sudoku_pt);
+  /* print_possibilities(&possibilities[0][0], sudoku_pt); */
 
-  /* pos = attempt_possibility(&possibilities[0][0], sudoku_pt); */
+  pos = attempt_possibility(&possibilities[0][0], sudoku_pt);
 
-  /* result = validate_sudoku(&possibilities[0][0], sudoku_pt); */
+  write_path[i] = pos;
 
-  if ( result == 0 ) {
+  i += 1;
 
-    backtrack(pos, sudoku_pt);
+  /* print_possibilities(&possibilities[0][0], sudoku_pt); */
 
-  }
+  result = validate_sudoku(&possibilities[0][0], sudoku_pt);
+
+  /* if ( result == 0 ) { */
+
+  /*   backtrack(pos, sudoku_pt); */
+
+  /* } */
 
 }
 
@@ -92,14 +109,60 @@ solve_sudoku(int8 *sudoku_pt) {
 int8
 attempt_possibility(int8 *possibilities_pt, int8 *sudoku_pt) {
 
-  int8 pos;
+  int8 pos, to_write, target, new_value;
 
-  /*  pos = find_earliest_blank(sudoku_pt);
-
-      extract_next_possibility(possibilities_pt, pos);
-
-   */
+  pos = find_earliest_blank(sudoku_pt);
   
+  new_value = 1 + \
+    extract_next_possibility(possibilities_pt, pos);
+
+  write_to_sudoku(sudoku_pt, pos, new_value);
+  
+}
+
+
+void
+write_to_sudoku(int8 *sudoku_pt, int8 pos, int8 new_value) {
+
+  *(sudoku_pt + pos) = new_value;
+
+}
+
+
+int8
+find_earliest_blank(int8 *sudoku_pt) {
+
+  int8 i = 0;
+
+  while ( *(sudoku_pt + i) != 0 ) {
+
+    i += 1;
+
+  }
+
+  printf("earliest possibility: %d\n", i);
+
+  return i;
+
+}
+
+
+int8
+extract_next_possibility(int8 *possibilities_pt, int8 pos) {
+
+  int8 i = 0;
+
+  while ( *(possibilities_pt + pos*9 + i) == 0 ) {
+
+    i += 1;
+
+  }
+
+  printf("writing to: %d %d\n", pos, i);
+
+  *(possibilities_pt + pos*9 + i) = 0;
+
+  return i;  
 
 }
 
@@ -162,7 +225,7 @@ setup_possibilities(int8 *possibilities_pt, int8 *sudoku_pt) {
 
       memset((possibilities_pt + i * 9), 0, 9);
 
-      *(possibilities_pt + i * 9 + known_value - 1) = 1;
+      /* *(possibilities_pt + i * 9 + known_value - 1) = 1; */
 
     }
 
