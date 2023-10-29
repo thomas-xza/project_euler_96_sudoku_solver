@@ -42,7 +42,19 @@ void
 write_to_sudoku(int8 *sudoku_pt, int8 pos, int8 new_value);
 
 int8
-validate_sudoku(int8 *possibilities_pt, int8 *sudoku_pt);
+check_rows(int8 *sudoku_pt);
+
+int8
+check_columns(int8 *sudoku_pt);
+
+int8
+check_groups(int8 *sudoku_pt);
+
+int8
+check_for_duplicates(int8 *set);
+
+int8
+validate_sudoku(int8 *sudoku_pt);
 
 void
 backtrack(int8 pos, int8 *sudoku_pt);
@@ -95,7 +107,9 @@ solve_sudoku(int8 *sudoku_pt) {
 
   /* print_possibilities(&possibilities[0][0], sudoku_pt); */
 
-  result = validate_sudoku(&possibilities[0][0], sudoku_pt);
+  print_sudoku(sudoku_pt);
+
+  result = validate_sudoku(sudoku_pt);
 
   /* if ( result == 0 ) { */
 
@@ -168,11 +182,97 @@ extract_next_possibility(int8 *possibilities_pt, int8 pos) {
 
 
 int8
-validate_sudoku(int8 *possibilities_pt, int8 *sudoku_pt) {
+validate_sudoku(int8 *sudoku_pt) {
 
+  int8 error;
   
+  error = check_rows(sudoku_pt);
+
+  printf("error: %d \n", error);
+
+  check_columns(sudoku_pt);
+
+  check_groups(sudoku_pt);
+  
+}
+
+
+int8
+check_rows(int8 *sudoku_pt) {
+
+  int8 i, j, result, duplicate_found;
+
+  int8 set[9] = {0};
+
+  for ( i = 0 ; i < 9 ; i++ ) {
+
+    for ( j = 0 ; j < 9 ; j++ ) {
+
+      set[j] = *(sudoku_pt + i*9 + j);
+
+      printf("%d  ", *(sudoku_pt + i*9 + j));
+
+    }
+
+    duplicate_found = check_for_duplicates(&set[0]);
+
+    if ( duplicate_found == 1 ) {
+
+      return 1;
+
+    }
+
+    printf("\n");
+
+  }
+
+  return 0;
 
 }
+
+
+int8
+check_for_duplicates(int8 *set) {
+
+  int8 i, j = 0;
+
+  for ( i = 0 ; i < 8 ; i++ ) {
+
+    printf("\n%d : ", *(set + i));
+
+    for ( j = i + 1 ; j < 9 ; j++ ) {
+
+      printf("%d,  ", *(set + j));
+
+      /* printf("%d = %d,   %d = %d  \n", i, *(set + i), j, *(set + j)); */
+
+      /* if ( *(set + i) == *(set + j) ) { */
+
+      /* 	return 1; */
+
+      /* } */
+
+    }
+
+    printf("\n");
+
+  }
+
+  return 0;
+
+}
+
+
+int8
+check_columns(int8 *sudoku_pt) {
+
+}
+
+int8
+check_groups(int8 *sudoku_pt) {
+
+}
+
 
 
 void
@@ -198,7 +298,7 @@ print_possibilities(int8 *possibilities_pt, int8 *sudoku_pt) {
 
     }
 
-    printf("    %d  %d", i, j);
+    printf("    %d", i);
 
     printf("\n");
 
