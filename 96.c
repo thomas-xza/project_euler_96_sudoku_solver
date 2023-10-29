@@ -42,7 +42,7 @@ void
 write_to_sudoku(int8 *sudoku_pt, int8 pos, int8 new_value);
 
 int8
-check_rows(int8 *sudoku_pt);
+check_sets(int8 *sudoku_pt, int8 set_type);
 
 int8
 check_columns(int8 *sudoku_pt);
@@ -186,31 +186,77 @@ validate_sudoku(int8 *sudoku_pt) {
 
   int8 error;
   
-  error = check_rows(sudoku_pt);
+  error = check_sets(sudoku_pt, 1);
+
+  if ( error == 1 ) {
+
+    return 1;
+
+  }
 
   printf("error: %d \n", error);
 
-  check_columns(sudoku_pt);
+  error = check_sets(sudoku_pt, 2);
 
-  check_groups(sudoku_pt);
-  
+  if ( error == 1 ) {
+
+    return 1;
+
+  }
+
+  error = check_sets(sudoku_pt, 3);
+
+  if ( error == 1 ) {
+
+    return 1;
+
+  }
+
+  return 0;
+
 }
 
 
 int8
-check_rows(int8 *sudoku_pt) {
+check_sets(int8 *sudoku_pt, int8 set_type) {
 
   int8 i, j, result, duplicate_found;
 
   int8 set[9] = {0};
 
+  int8 selector_a[9] = {0, 3, 6, 27, 30, 33, 54, 57, 60};
+
+  int8 selector_b[9] = {0, 1, 2, 9, 10, 11, 18, 19, 20};
+
   for ( i = 0 ; i < 9 ; i++ ) {
 
     for ( j = 0 ; j < 9 ; j++ ) {
 
-      set[j] = *(sudoku_pt + i*9 + j);
+      if ( set_type == 1 ) {
 
-      /* printf("%d  ", *(sudoku_pt + i*9 + j)); */
+	/*  Horizontal rows.  */
+
+	set[j] = *(sudoku_pt + i*9 + j);
+
+	/* printf("%d  ", *(sudoku_pt + i*9 + j)); */
+
+      } else if ( set_type == 2 ) {
+
+	/*  Vertical columns.  */
+	
+	set[j] = *(sudoku_pt + i + j*9);
+
+	/* printf("%d  ", *(sudoku_pt + i + j*9)); */
+
+      } else if ( set_type == 3 ) {
+
+	/*  3 x 3 boxes.  */
+
+	set[j] = *(sudoku_pt + selector_a[i] + selector_b[j]);
+	
+	printf("%d  ", *(sudoku_pt + selector_a[i] + selector_b[j]));
+	
+      }
 
     }
 
@@ -244,11 +290,11 @@ check_for_duplicates(int8 *set) {
 
       /* printf("%d = %d,   %d = %d  \n", i, *(set + i), j, *(set + j)); */
 
-      /* if ( *(set + i) == *(set + j) ) { */
+      if ( *(set + i) == *(set + j) ) {
 
-      /* 	return 1; */
+	return 1;
 
-      /* } */
+      }
 
     }
 
@@ -259,44 +305,74 @@ check_for_duplicates(int8 *set) {
 }
 
 
-int8
-check_columns(int8 *sudoku_pt) {
+/* int8 */
+/* check_columns(int8 *sudoku_pt) { */
 
-  int8 i, j, result, duplicate_found;
+/*   int8 i, j, result, duplicate_found; */
 
-  int8 set[9] = {0};
+/*   int8 set[9] = {0}; */
 
-  for ( i = 0 ; i < 9 ; i++ ) {
+/*   for ( i = 0 ; i < 9 ; i++ ) { */
 
-    for ( j = 0 ; j < 9 ; j++ ) {
+/*     for ( j = 0 ; j < 9 ; j++ ) { */
 
-      set[j] = *(sudoku_pt + i + j*9);
+/*       /\* printf("%d  ", *(sudoku_pt + i + j*9)); *\/ */
 
-      printf("%d  ", *(sudoku_pt + i + j*9));
+/*     } */
 
-    }
+/*     /\* printf("\n"); *\/ */
 
-    printf("\n");
+/*     duplicate_found = check_for_duplicates(&set[0]); */
 
-    duplicate_found = check_for_duplicates(&set[0]);
+/*     if ( duplicate_found == 1 ) { */
 
-    if ( duplicate_found == 1 ) {
+/*       return 1; */
 
-      return 1;
+/*     } */
 
-    }
+/*   } */
 
-  }
-
-  return 0;
+/*   return 0; */
   
-}
+/* } */
 
-int8
-check_groups(int8 *sudoku_pt) {
 
-}
+/* int8 */
+/* check_groups(int8 *sudoku_pt) { */
 
+/*   int8 selector_a[9] = {0, 3, 6, 27, 30, 33, 54, 57, 60}; */
+
+/*   int8 selector_b[9] = {0, 1, 2, 9, 10, 11, 18, 19, 20}; */
+
+/*   int8 i, j, result, duplicate_found; */
+
+/*   int8 set[9] = {0}; */
+
+/*   for ( i = 0 ; i < 9 ; i++ ) { */
+
+/*     for ( j = 0 ; j < 9 ; j++ ) { */
+
+/*       set[j] = *(sudoku_pt + selector_a[i] + selector_b[j]); */
+
+/*       printf("%d  ", *(sudoku_pt + selector_a[i] + selector_b[j])); */
+
+/*     } */
+
+/*     /\* printf("\n"); *\/ */
+
+/*     duplicate_found = check_for_duplicates(&set[0]); */
+
+/*     if ( duplicate_found == 1 ) { */
+
+/*       return 1; */
+
+/*     } */
+
+/*   } */
+
+/*   return 0; */
+  
+/* } */
 
 
 void
