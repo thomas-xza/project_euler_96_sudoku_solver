@@ -57,6 +57,9 @@ int8
 validate_sudoku(int8 *sudoku_pt);
 
 int8
+backtrack(int8 *sudoku_pt, int8 *possibilities, int8 pos);
+
+int8
 chk_completion(int8 *sudoku_pt);
 
 int
@@ -90,7 +93,7 @@ solve_sudoku(int8 *sudoku_pt) {
 
   int8 possibilities[81][9] = {0};
 
-  int8 pos, i, error, completed = 0;
+  int8 pos, i, error, more_backtrack, completed = 0;
 
   int8 write_path[81] = {0}; 
 
@@ -104,35 +107,63 @@ solve_sudoku(int8 *sudoku_pt) {
 
     i += 1;
 
-    /* print_possibilities(&possibilities[0][0], sudoku_pt); */
-
     print_sudoku(sudoku_pt);
 
     error = validate_sudoku(sudoku_pt);
 
     if ( error == 1 ) {
 
-      /*  Backtrack.  */
+      more_backtrack = 1;
 
-      printf("Backtracking %d...\n", write_path[i]);
+    }
 
-      write_to_sudoku(sudoku_pt, pos, 0);
+    while ( more_backtrack == 1 ) {
 
-      print_sudoku(sudoku_pt);
+      printf("Backtracking %d...\n", pos);
+
+      more_backtrack = backtrack(sudoku_pt, &possibilities[0][0], pos);
 
       i -= 1;
 
       write_path[i] = 0;
-      
-    } else {
 
-      printf("Validated");
+      pos = write_path[i - 1];
 
     }
+      
+    printf("Validated\n");
 
     completed = chk_completion(sudoku_pt);
 
   }
+
+}
+
+
+int8
+backtrack(int8 *sudoku_pt, int8 *possibilities_pt, int8 pos) {
+
+  int8 more_backtrack = 0;
+  
+  write_to_sudoku(sudoku_pt, pos, 0);
+
+  printf("Position target: %d\n", pos);
+
+  print_sudoku(sudoku_pt);
+
+  print_possibilities(possibilities_pt, sudoku_pt);
+
+  if ( *(possibilities_pt + pos*9 + 8) == 0 ) {
+
+    memset((possibilities_pt + pos*9), 1, 9);
+
+    more_backtrack = 1;
+
+    /* printf("Reset possibilities at %d. \n", pos); */
+
+  }
+
+  return more_backtrack;
 
 }
 
@@ -189,13 +220,13 @@ find_earliest_blank(int8 *sudoku_pt) {
 
   while ( *(sudoku_pt + i) != 0 ) {
 
-    printf("target: %d\n", *(sudoku_pt + i));
+    /* printf("Skipping: %d\n", *(sudoku_pt + i)); */
 
     i += 1;
 
   }
 
-  printf("earliest possibility: %d\n", i);
+  printf("Earliest possibility: %d\n", i);
 
   return i;
 
