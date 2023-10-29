@@ -210,7 +210,7 @@ check_rows(int8 *sudoku_pt) {
 
       set[j] = *(sudoku_pt + i*9 + j);
 
-      printf("%d  ", *(sudoku_pt + i*9 + j));
+      /* printf("%d  ", *(sudoku_pt + i*9 + j)); */
 
     }
 
@@ -221,8 +221,6 @@ check_rows(int8 *sudoku_pt) {
       return 1;
 
     }
-
-    printf("\n");
 
   }
 
@@ -238,11 +236,11 @@ check_for_duplicates(int8 *set) {
 
   for ( i = 0 ; i < 8 ; i++ ) {
 
-    printf("\n%d : ", *(set + i));
+    /* printf("\n%d : ", *(set + i)); */
 
     for ( j = i + 1 ; j < 9 ; j++ ) {
 
-      printf("%d,  ", *(set + j));
+      /* printf("%d,  ", *(set + j)); */
 
       /* printf("%d = %d,   %d = %d  \n", i, *(set + i), j, *(set + j)); */
 
@@ -254,8 +252,6 @@ check_for_duplicates(int8 *set) {
 
     }
 
-    printf("\n");
-
   }
 
   return 0;
@@ -266,6 +262,34 @@ check_for_duplicates(int8 *set) {
 int8
 check_columns(int8 *sudoku_pt) {
 
+  int8 i, j, result, duplicate_found;
+
+  int8 set[9] = {0};
+
+  for ( i = 0 ; i < 9 ; i++ ) {
+
+    for ( j = 0 ; j < 9 ; j++ ) {
+
+      set[j] = *(sudoku_pt + i + j*9);
+
+      printf("%d  ", *(sudoku_pt + i + j*9));
+
+    }
+
+    printf("\n");
+
+    duplicate_found = check_for_duplicates(&set[0]);
+
+    if ( duplicate_found == 1 ) {
+
+      return 1;
+
+    }
+
+  }
+
+  return 0;
+  
 }
 
 int8
