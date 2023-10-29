@@ -56,9 +56,8 @@ check_for_duplicates(int8 *set);
 int8
 validate_sudoku(int8 *sudoku_pt);
 
-void
-backtrack(int8 pos, int8 *sudoku_pt);
-
+int8
+chk_completion(int8 *sudoku_pt);
 
 int
 main(int argc, char *argv[]) {
@@ -91,31 +90,61 @@ solve_sudoku(int8 *sudoku_pt) {
 
   int8 possibilities[81][9] = {0};
 
-  int8 pos, result, i = 0;
+  int8 pos, i, error, completed = 0;
 
   int8 write_path[81] = {0}; 
 
   setup_possibilities(&possibilities[0][0], sudoku_pt);
 
-  /* print_possibilities(&possibilities[0][0], sudoku_pt); */
+  while ( completed == 0 ) {
 
-  pos = attempt_possibility(&possibilities[0][0], sudoku_pt);
+    pos = attempt_possibility(&possibilities[0][0], sudoku_pt);
 
-  write_path[i] = pos;
+    write_path[i] = pos;
 
-  i += 1;
+    i += 1;
 
-  /* print_possibilities(&possibilities[0][0], sudoku_pt); */
+    /* print_possibilities(&possibilities[0][0], sudoku_pt); */
 
-  print_sudoku(sudoku_pt);
+    print_sudoku(sudoku_pt);
 
-  result = validate_sudoku(sudoku_pt);
+    error = validate_sudoku(sudoku_pt);
 
-  /* if ( result == 0 ) { */
+    if ( error == 1 ) {
 
-  /*   backtrack(pos, sudoku_pt); */
+      /*  Backtrack.  */
 
-  /* } */
+      write_to_sudoku(sudoku_pt, pos, 0);
+
+      i -= 1;
+
+      write_path[i] = 0;
+      
+    }
+
+    completed = chk_completion(sudoku_pt);
+
+  }
+
+}
+
+
+int8
+chk_completion(int8 *sudoku_pt) {
+
+  int8 i;
+
+  for ( i = 0 ; i < 81 ; i++ ) {
+
+    if ( *(sudoku_pt + i) == 0 ) {
+
+      return 0;
+
+    }
+
+  }
+
+  return 1;
 
 }
 
@@ -301,14 +330,6 @@ check_for_duplicates(int8 *set) {
   }
 
   return 0;
-
-}
-
-
-void
-backtrack(int8 pos, int8 *sudoku_pt) {
-
-  
 
 }
 
