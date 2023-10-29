@@ -64,11 +64,13 @@ solve_sudoku(int8 *sudoku_pt) {
 
     printf("%d : ", *(sudoku_pt + i));
 
-    for ( j = 1 ; j < 10 ; j++ ) {
+    for ( j = 0 ; j < 9 ; j++ ) {
 
       printf("%d ", possibilities[i][j]);
 
     }
+
+    printf("    %d  %d", i, j);
 
     printf("\n");
 
@@ -80,8 +82,6 @@ solve_sudoku(int8 *sudoku_pt) {
 void
 setup_possibilities(int8 *possibilities_pt, int8 *sudoku_pt) {
 
-  /*  setup possibilities  */
-
   int8 known_value;
 
   int i, j;
@@ -90,19 +90,29 @@ setup_possibilities(int8 *possibilities_pt, int8 *sudoku_pt) {
 
     known_value = *(sudoku_pt + i);
 
-    for ( j = 1 ; j < 10 ; j++ ) {
+    /* printf("known value: %d\n", known_value); */
 
-      if ( j != known_value ) {
+    memset((possibilities_pt + i * 9), 1, 2);
 
-	*(possibilities_pt + i + j) = 1;
-
-      } else {
-
-	*(possibilities_pt + i + j) = 0;
-
-      }
+    if ( known_value > 0 ) {
 
     }
+
+    
+
+    /* for ( j = 0 ; j < 10 ; j++ ) { */
+
+    /*   if ( j != known_value ) { */
+
+    /* 	*(possibilities_pt + i + j) = 1; */
+
+    /*   } else { */
+
+    /* 	*(possibilities_pt + i + j) = 0; */
+
+    /*   } */
+
+    /* } */
 
   }
   
