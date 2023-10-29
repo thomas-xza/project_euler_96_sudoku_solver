@@ -8,7 +8,7 @@
 #define int64  long long int
 #define uint64 unsigned long long int
 
-#define SUDOKU_QUANTITY 2
+#define SUDOKU_QUANTITY 50
 
 
 void
@@ -20,7 +20,7 @@ load_sudoku(int8 *raw_data, int8 *sudoku);
 void
 print_sudoku(int8 *sudoku_pt);
 
-void
+int
 solve_sudoku(int8 *sudoku_pt);
   
 void
@@ -69,7 +69,7 @@ main(int argc, char *argv[]) {
 
   int8 sudoku[81] = {0};
 
-  int i, j;
+  int i, j, sum, to_add;
 
   read_file(&raw_data[0], "96_sudoku_set.txt");
 
@@ -77,18 +77,24 @@ main(int argc, char *argv[]) {
 
     load_sudoku(&raw_data[i], &sudoku[0]);
 
-    solve_sudoku(&sudoku[0]);
+    to_add = solve_sudoku(&sudoku[0]);
+
+    printf("Sudoku #%d: %d\n\n", i / 81, to_add);
+
+    sum += to_add;
 
     /* print_sudoku(&sudoku[0]); */
 
   }
+
+  printf("Total sum, for Project Euler: %d  \n", sum);
 
   return 0;
 
 }
 
 
-void
+int
 solve_sudoku(int8 *sudoku_pt) {
 
   int8 possibilities[81][9] = {0};
@@ -107,7 +113,7 @@ solve_sudoku(int8 *sudoku_pt) {
 
     i += 1;
 
-    print_sudoku(sudoku_pt);
+    /* print_sudoku(sudoku_pt); */
 
     error = validate_sudoku(sudoku_pt);
 
@@ -119,7 +125,7 @@ solve_sudoku(int8 *sudoku_pt) {
 
     while ( more_backtrack == 1 ) {
 
-      printf("Backtracking %d...\n", pos);
+      /* printf("Backtracking %d...\n", pos); */
 
       more_backtrack = backtrack(sudoku_pt, &possibilities[0][0], pos);
 
@@ -131,11 +137,15 @@ solve_sudoku(int8 *sudoku_pt) {
 
     }
       
-    printf("Validated\n");
+    /* printf("Validated\n"); */
 
     completed = chk_completion(sudoku_pt);
 
   }
+
+  print_sudoku(sudoku_pt);
+
+  return *(sudoku_pt) * 100 + *(sudoku_pt + 1) * 10 + *(sudoku_pt + 2);
 
 }
 
@@ -147,11 +157,11 @@ backtrack(int8 *sudoku_pt, int8 *possibilities_pt, int8 pos) {
   
   write_to_sudoku(sudoku_pt, pos, 0);
 
-  printf("Position target: %d\n", pos);
+  /* printf("Position target: %d\n", pos); */
 
-  print_sudoku(sudoku_pt);
+  /* print_sudoku(sudoku_pt); */
 
-  print_possibilities(possibilities_pt, sudoku_pt);
+  /* print_possibilities(possibilities_pt, sudoku_pt); */
 
   if ( *(possibilities_pt + pos*9 + 8) == 0 ) {
 
@@ -226,7 +236,7 @@ find_earliest_blank(int8 *sudoku_pt) {
 
   }
 
-  printf("Earliest possibility: %d\n", i);
+  /* printf("Earliest possibility: %d\n", i); */
 
   return i;
 
@@ -244,7 +254,7 @@ extract_next_possibility(int8 *possibilities_pt, int8 pos) {
 
   }
 
-  printf("writing to: %d %d\n", pos, i);
+  /* printf("writing to: %d %d\n", pos, i); */
 
   *(possibilities_pt + pos*9 + i) = 0;
 
@@ -260,15 +270,15 @@ validate_sudoku(int8 *sudoku_pt) {
   
   error = check_sets(sudoku_pt, 1);
 
-  if ( error == 1 ) {  printf("row error\n"); return 1;  }
+  if ( error == 1 ) {  return 1; } /* printf("row error\n"); return 1;  } */
 
   error = check_sets(sudoku_pt, 2);
 
-  if ( error == 1 ) {  printf("vetical error\n"); return 1;  }
+  if ( error == 1 ) {  return 1; } /* printf("vetical error\n"); return 1;  } */
 
   error = check_sets(sudoku_pt, 3);
 
-  if ( error == 1 ) {  printf("3x3 error\n"); return 1;  }
+  if ( error == 1 ) {  return 1; } /* printf("3x3 error\n"); return 1;  } */
 
   return 0;
 
