@@ -92,13 +92,17 @@ setup_possibilities(int8 *possibilities_pt, int8 *sudoku_pt) {
 
     /* printf("known value: %d\n", known_value); */
 
-    memset((possibilities_pt + i * 9), 1, 2);
+    if ( known_value == 0 ) {
 
-    if ( known_value > 0 ) {
+      memset((possibilities_pt + i * 9), 1, 9);
+
+    } else {
+
+      memset((possibilities_pt + i * 9), 0, 9);
+
+      *(possibilities_pt + i * 9 + known_value - 1) = 1;
 
     }
-
-    
 
     /* for ( j = 0 ; j < 10 ; j++ ) { */
 
