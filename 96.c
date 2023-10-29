@@ -168,6 +168,8 @@ attempt_possibility(int8 *possibilities_pt, int8 *sudoku_pt) {
     extract_next_possibility(possibilities_pt, pos);
 
   write_to_sudoku(sudoku_pt, pos, new_value);
+
+  return pos;
   
 }
 
@@ -255,7 +257,7 @@ check_sets(int8 *sudoku_pt, int8 set_type) {
 
   for ( i = 0 ; i < 9 ; i++ ) {
 
-    printf("set:  ");
+    /* printf("set:  "); */
 
     for ( j = 0 ; j < 9 ; j++ ) {
 
@@ -279,11 +281,11 @@ check_sets(int8 *sudoku_pt, int8 set_type) {
 	
       }
 
-      printf("%d  ", set[j]);
+      /* printf("%d  ", set[j]); */
 
     }
 
-    printf("\n");
+    /* printf("\n"); */
 
     duplicate_found = check_for_duplicates(&set[0]);
 
