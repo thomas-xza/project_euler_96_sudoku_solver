@@ -8,7 +8,7 @@
 #define int64  long long int
 #define uint64 unsigned long long int
 
-#define SUDOKU_QUANTITY 50
+#define SUDOKU_QUANTITY 1
 
 
 void
@@ -71,7 +71,7 @@ main(int argc, char *argv[]) {
 
   int i, j, sum, to_add;
 
-  read_file(&raw_data[0], "96_sudoku_set.txt");
+  read_file(&raw_data[0], "worlds_hardest_sudoku_allegedly.txt");
 
   for ( i = 0 ; i < SUDOKU_QUANTITY * 81 ; i += 81 ) {
 
